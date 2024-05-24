@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress NavigationFile -->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/signInFragment">
+
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.example.e_journal.screens.sign_in.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in" >
+        <action
+            android:id="@+id/action_signInFragment_to_teacherTabsFragment"
+            app:destination="@id/teacherTabsFragment"
+            app:popUpTo="@id/signInFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/teacherTabsFragment"
+        android:name="com.example.e_journal.TeacherTabsFragment"
+        android:label=""
+        tools:layout="@layout/fragment_teacher_tabs" >
+        <action
+            android:id="@+id/action_teacherTabsFragment_to_groupTableFragment"
+            app:destination="@id/groupTableFragment" />
+        <action
+            android:id="@+id/action_teacherTabsFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:popUpTo="@id/teacherTabsFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/groupTableFragment"
+        android:name="com.example.e_journal.screens.group_table.GroupTableFragment"
+        android:label="Журнал {groupName}"
+        tools:layout="@layout/fragment_group_table" >
+        <argument
+            android:name="groupName"
+            app:argType="string" />
+    </fragment>
+</navigation>

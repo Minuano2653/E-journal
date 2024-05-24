@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- ФИО ученика -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ФИО ученика"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:gravity="center_horizontal"
+        android:paddingBottom="8dp"/>
+
+    <!-- Посещения -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Посещения: 0"
+        android:gravity="center_horizontal"
+        android:paddingBottom="4dp"/>
+
+    <!-- Отстуствия -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Отстуствия: 0"
+        android:gravity="center_horizontal"
+        android:paddingBottom="4dp"/>
+
+    <!-- Отстутсвия (У) -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Отстутсвия (У): 0"
+        android:gravity="center_horizontal"
+        android:paddingBottom="4dp"/>
+
+    <!-- Средний балл -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Средний балл: 0.0"
+        android:gravity="center_horizontal"
+        android:paddingBottom="8dp"/>
+
+</LinearLayout>

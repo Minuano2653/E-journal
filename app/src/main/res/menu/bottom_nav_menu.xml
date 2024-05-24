@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/scheduleFragment"
+        android:icon="@drawable/ic_schedule_24dp"
+        android:title="@string/schedule_bottom_item" />
+
+    <item
+        android:id="@+id/groupsFragment"
+        android:icon="@drawable/ic_groups_24dp"
+        android:title="@string/classes_bottom_nav_item" />
+
+</menu>

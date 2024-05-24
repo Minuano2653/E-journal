@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">E-journal</string>
+    <string name="corner_view_text">ФИО \\ Дата</string>
+    <string name="selected_month">Выбранный месяц: </string>
+    <string name="login_text_view">Вход в E-journal</string>
+    <string name="login_button_text">Войти</string>
+    <string name="login_student_button_text">Я ученик(-ца)</string>
+    <string name="login_teacher_button_text">Я учитель</string>
+    <string name="email_edit_text_hint">Электронная почта</string>
+    <string name="password_hint_edit_text">Пароль</string>
+    <string name="students_number_text">%1$s человек</string>
+    <string name="search_view_hint">Поиск групп</string>
+
+    <string name="group_name_text_view">Класс: %1$s</string>
+    <string name="lesson_number_text_view">Урок: %1$s</string>
+    <string name="lesson_time_text_view">Время: %1$s</string>
+    <string name="homework_edit_text_hint">Введите домашнее задание</string>
+    <string name="classes_bottom_nav_item">Классы</string>
+    <string name="schedule_bottom_item">Расписание</string>
+
+    <string-array name="months">
+        <item>Январь</item>
+        <item>Февраль</item>
+        <item>Март</item>
+        <item>Апрель</item>
+        <item>Май</item>
+        <item>Сентябрь</item>
+        <item>Октябрь</item>
+        <item>Ноябрь</item>
+        <item>Декабрь</item>
+    </string-array>
+
+    <string-array name="grade_types">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>Н</item>
+        <item>У</item>
+    </string-array>
+
+    <string name="title_activity_teacher">TeacherActivity</string>
+    <string name="Logout">Выйти из аккаунта</string>
+    <string name="classes_not_found_text_view">Классы не найдены</string>
+
+    <string name="empty_load_response">Пустой ответ сервера.</string>
+    <string name="error_load_response">Ошибка загрузки.</string>
+    <string name="title_activity_bottom">BottomActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="set_homework_popup_item_text">Задать домашнее задание</string>
+    <string name="go_to_group_table_popup_item_text">Перейти к журналу</string>
+    <string name="group_table_not_found_text">Журнал не найден</string>
+
+
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gradeTextView"
+    android:layout_width="@dimen/grade_text_view_width"
+    android:layout_height="@dimen/grade_text_view_height"
+    android:textSize="18sp"
+    android:maxLength="1"
+    android:background="@drawable/border_black"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center">
+</TextView>
+

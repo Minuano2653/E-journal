@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/setGetHomework"
+        android:title="@string/set_homework_popup_item_text"
+        />
+
+    <item
+        android:id="@+id/goToGroupTable"
+        android:title="@string/go_to_group_table_popup_item_text"
+        />
+</menu>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/teacher_graph"
+    app:startDestination="@+id/scheduleFragment">
+
+    <fragment
+        android:id="@+id/groupsFragment"
+        android:name="com.example.e_journal.screens.groups.GroupsFragment"
+        android:label="Классы"
+        tools:layout="@layout/fragment_groups" >
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/scheduleFragment"
+        android:name="com.example.e_journal.screens.schedule.ScheduleFragment"
+        android:label="Расписание"
+        tools:layout="@layout/fragment_schedule">
+
+    </fragment>
+
+</navigation>
