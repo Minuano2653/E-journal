@@ -30,6 +30,7 @@ import com.example.e_journal.Repositories;
 import com.example.e_journal.databinding.FragmentGroupTableBinding;
 import com.example.e_journal.model.group_table.GradeOrVisit;
 import com.example.e_journal.model.group_table.Student;
+import com.example.e_journal.model.group_table.StudentStatistics;
 
 import java.util.Calendar;
 import java.util.List;
@@ -75,6 +76,7 @@ public class GroupTableFragment extends Fragment {
         observeMonth();
         observeState();
         observeSaveResult();
+        observeStudentStatistics();
 
         setupDialogFragmentMonthChoiceListener();
         setupDialogFragmentGradeChoiceListener();
@@ -118,6 +120,21 @@ public class GroupTableFragment extends Fragment {
             if (gradeOrVisit != null) {
                 gradesAndVisitsAdapter.updateGradeOrVisit(gradeOrVisit);
             }
+        });
+    }
+
+    private void observeStudentStatistics() {
+        viewModel.studentStatistics.observe(getViewLifecycleOwner(), studentStatistics -> {
+            Log.d("RRRR", studentStatistics.getStudentName());
+            Log.d("RRRR", studentStatistics.getPresenceCount());
+            Log.d("RRRR", studentStatistics.getAbsenceCount());
+            Log.d("RRRR", studentStatistics.getExcusedAbsenceCount());
+            Log.d("RRRR", studentStatistics.getAverageGrade());
+            showDialogFragmentStudentStatistics(studentStatistics);
+        });
+
+        viewModel.fetchingStudentsStatisticsResult.observe(getViewLifecycleOwner(), message -> {
+            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -187,33 +204,16 @@ public class GroupTableFragment extends Fragment {
 
     // -----
 
+    private void showDialogFragmentStudentStatistics(StudentStatistics studentStatistics) {
+        DialogFragmentStudentStatistics.showDialogFragmentStudentStatistics(getParentFragmentManager(), studentStatistics);
+    }
+
+    // -----
+
     private void setupDatesRecyclerView() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
         binding.datesRecyclerView.setLayoutManager(layoutManager);
         binding.datesRecyclerView.setAdapter(datesAdapter);
-    }
-
-    private void setupNamesTable(List<String> names) {
-        LayoutInflater inflater = LayoutInflater.from(requireContext());
-        for (int i = 0; i < names.size(); i++) {
-
-            TableRow tableRow = new TableRow(requireContext());
-            tableRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-
-            TextView textView = (TextView) inflater.inflate(R.layout.item_student, tableRow, false);
-            textView.setText(names.get(i));
-            textView.setId(View.generateViewId());
-            textView.setTag(names.get(i));
-
-            textView.setOnClickListener(v -> {
-                String tag = (String) v.getTag();
-                Toast.makeText(requireContext(), "Нажата ячейка с тегом: " + tag, Toast.LENGTH_SHORT).show();
-            });
-
-            tableRow.addView(textView);
-
-            binding.namesTableLayout.addView(tableRow);
-        }
     }
 
     private void setupGradesAndVisitsRecyclerView() {
@@ -229,6 +229,30 @@ public class GroupTableFragment extends Fragment {
         binding.gradesAndVisitsRecyclerView.setLayoutManager(gridLayoutManager);
         binding.gradesAndVisitsRecyclerView.setAdapter(gradesAndVisitsAdapter);
     }
+
+    private void setupNamesTable(List<String> names) {
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        for (int i = 0; i < names.size(); i++) {
+
+            TableRow tableRow = new TableRow(requireContext());
+            tableRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+
+            TextView textView = (TextView) inflater.inflate(R.layout.item_student, tableRow, false);
+            textView.setText(names.get(i));
+            textView.setId(View.generateViewId());
+            textView.setTag(names.get(i));
+
+            textView.setOnClickListener(v -> {
+                String studentName = (String) v.getTag();
+                viewModel.loadStudentStatistics(studentName, groupName);
+            });
+
+            tableRow.addView(textView);
+
+            binding.namesTableLayout.addView(tableRow);
+        }
+    }
+
 
     private void hideAll() {
         binding.tableView.setVisibility(View.GONE);

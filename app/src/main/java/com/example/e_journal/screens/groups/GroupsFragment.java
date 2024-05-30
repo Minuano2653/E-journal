@@ -13,11 +13,14 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.e_journal.R;
 import com.example.e_journal.Repositories;
+import com.example.e_journal.TeacherTabsFragmentDirections;
 import com.example.e_journal.databinding.FragmentGroupsBinding;
 import com.example.e_journal.utlis.Event;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,7 +41,16 @@ public class GroupsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         GroupsViewModelFactory factory = new GroupsViewModelFactory(Repositories.getGroupsRepository());
         viewModel = new ViewModelProvider(this, factory).get(GroupsViewModel.class);
-        adapter = new GroupsAdapter();
+        adapter = new GroupsAdapter(groupName -> {
+            NavHostFragment navHostFragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+
+            if (navHostFragment != null) {
+                NavController navController = navHostFragment.getNavController();
+                TeacherTabsFragmentDirections.ActionTeacherTabsFragmentToGroupTableFragment action =
+                        TeacherTabsFragmentDirections.actionTeacherTabsFragmentToGroupTableFragment(groupName);
+                navController.navigate(action);
+            }
+        });
     }
 
     @Nullable

@@ -24,6 +24,12 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupViewH
     private List<Group> groups = new ArrayList<>();
     private List<Group> groupsCopy = new ArrayList<>();
 
+    private GroupActionListener groupActionListener;
+
+    public GroupsAdapter(GroupActionListener groupActionListener) {
+        this.groupActionListener = groupActionListener;
+    }
+
     public void setGroups(List<Group> groups) {
         /*this.groups = groups;
         notifyDataSetChanged();*/
@@ -62,6 +68,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupViewH
     @Override
     public void onClick(View v) {
         Group group = (Group) v.getTag();
+        groupActionListener.onGoToGroupTableClick(group.getName());
     }
 
     public void filterByName(String query) {
@@ -88,5 +95,9 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupViewH
             super(binding.getRoot());
             this.binding = binding;
         }
+    }
+
+    public interface GroupActionListener {
+        void onGoToGroupTableClick(String groupName);
     }
 }

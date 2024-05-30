@@ -18,8 +18,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -31,17 +34,22 @@ import java.util.stream.Collectors;
 public class FirebaseGroupTableRepository {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final String teacherUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     public interface GroupTableLoadListener {
         void onSuccess(List<Student> students);
         void onError(Exception e);
     }
 
+    public interface StudentStatisticsLoadListener {
+        void onSuccess(StudentStatistics studentStatistics);
+        void onError(Exception e);
+    }
+
     public void saveGradeOrVisit(String groupName, GradeOrVisit gradeOrVisit, String month, OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener) {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         db.collection("maths teachers")
-                .document(uid)
+                .document(teacherUID)
                 .get().addOnSuccessListener(teacherSnapshot -> {
                     String subject = teacherSnapshot.getString("position");
 
@@ -68,12 +76,133 @@ public class FirebaseGroupTableRepository {
                 }).addOnFailureListener(onFailureListener);
     }
 
-    public void loadStudents(String groupName, String month, GroupTableLoadListener listener) {
-
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    public void getStudentStatistics(String studentName, String groupName, int month, StudentStatisticsLoadListener listener) {
 
         db.collection("maths teachers")
-                .document(uid)
+                .document(teacherUID)
+                .get().addOnSuccessListener(teacherSnapshot -> {
+                    String subject = teacherSnapshot.getString("position");
+
+                    db.collection("classes")
+                            .document(groupName)
+                            .collection("students")
+                            .whereEqualTo("name", studentName)
+                            .limit(1)
+                            .get().addOnSuccessListener(queryDocumentSnapshots -> {
+                                if (!queryDocumentSnapshots.isEmpty()) {
+                                    DocumentSnapshot studentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                                    DocumentReference studentRef = studentSnapshot.getReference();
+
+                                    studentRef.collection("subjects")
+                                            .document(subject)
+                                            .get().addOnSuccessListener(documentSnapshot -> {
+                                                Map<Integer,Map<String, String>> months = new HashMap<>();
+                                                if (month == 8 || month == 9) {
+                                                    Map<String, String> septemberMap = (Map<String, String>) documentSnapshot.get("september");
+                                                    Map<String, String> octoberMap = (Map<String, String>) documentSnapshot.get("october");
+                                                    months.put(8, septemberMap);
+                                                    months.put(9, octoberMap);
+                                                } else if (month == 10 || month == 11) {
+                                                    Map<String, String> novemberMap = (Map<String, String>) documentSnapshot.get("november");
+                                                    Map<String, String> decemberMap = (Map<String, String>) documentSnapshot.get("december");
+                                                    months.put(10, novemberMap);
+                                                    months.put(11, decemberMap);
+                                                } else if (month == 0 || month == 1 || month == 2) {
+                                                    Map<String, String> januaryMap = (Map<String, String>) documentSnapshot.get("january");
+                                                    Map<String, String> februaryMap = (Map<String, String>) documentSnapshot.get("february");
+                                                    Map<String, String> marchMap = (Map<String, String>) documentSnapshot.get("march");
+                                                    months.put(0, januaryMap);
+                                                    months.put(1, februaryMap);
+                                                    months.put(2, marchMap);
+                                                } else if (month == 3 || month == 4) {
+                                                    Map<String, String> aprilMap = (Map<String, String>) documentSnapshot.get("april");
+                                                    Map<String, String> mayMap = (Map<String, String>) documentSnapshot.get("may");
+                                                    months.put(3, aprilMap);
+                                                    months.put(4, mayMap);
+                                                } else {
+                                                    throw new IllegalArgumentException("No matching month");
+                                                }
+                                                Map<String, String> studentStatistics = calculateStatistics(months);
+
+                                                studentRef.collection("subjects")
+                                                        .document(subject)
+                                                        .set(studentStatistics, SetOptions.merge())
+                                                        .addOnSuccessListener(unused -> {
+                                                            listener.onSuccess(new StudentStatistics(
+                                                                    studentName,
+                                                                    studentStatistics.get("presenceCount"),
+                                                                    studentStatistics.get("absenceCount"),
+                                                                    studentStatistics.get("excusedAbsenceCount"),
+                                                                    studentStatistics.get("averageGrade")
+                                                                    ));
+                                                        })
+                                                        .addOnFailureListener(listener::onError);
+                                            }).addOnFailureListener(listener::onError);
+                                }
+                            }).addOnFailureListener(listener::onError);
+
+                }).addOnFailureListener(listener::onError);
+
+    }
+
+    private Map<String, String> calculateStatistics(Map<Integer, Map<String, String>> months) {
+        Calendar currentDate = Calendar.getInstance();
+        int presences = 0;
+        int absences = 0;
+        int excusedAbsences = 0;
+        double totalScore = 0;
+        int scoreCount = 0;
+        String averageGrade;
+
+        for (Map.Entry<Integer, Map<String, String>> monthEntry : months.entrySet()) {
+            int monthNumber = monthEntry.getKey();
+            Map<String, String> monthMap = monthEntry.getValue();
+
+            for (Map.Entry<String, String> entry : monthMap.entrySet()) {
+                Calendar dateKey = Calendar.getInstance();
+                dateKey.set(Calendar.MONTH, monthNumber);
+                dateKey.set(Calendar.DAY_OF_MONTH, Integer.parseInt(entry.getKey()));
+                String value = entry.getValue();
+
+                if (dateKey.after(currentDate)) {
+                    continue;
+                }
+
+                switch (value) {
+                    case "2":
+                    case "3":
+                    case "4":
+                    case "5":
+                        presences++;
+                        totalScore += Integer.parseInt(value);
+                        scoreCount++;
+                        break;
+                    case "":
+                        presences++;
+                        break;
+                    case "Н":
+                        absences++;
+                        break;
+                    case "У":
+                        excusedAbsences++;
+                        break;
+                }
+            }
+        }
+        averageGrade = (scoreCount > 0) ? String.format("%.2f", totalScore / scoreCount) : "0.00";
+        Map<String, String> studentStatistics = new HashMap<>();
+        studentStatistics.put("presenceCount", String.valueOf(presences));
+        studentStatistics.put("absenceCount", String.valueOf(absences));
+        studentStatistics.put("excusedAbsenceCount", String.valueOf(excusedAbsences));
+        studentStatistics.put("averageGrade", averageGrade);
+
+        return studentStatistics;
+    }
+
+    public void loadStudents(String groupName, String month, GroupTableLoadListener listener) {
+
+        db.collection("maths teachers")
+                .document(teacherUID)
                 .get().addOnSuccessListener(teacherSnapshot -> {
                     String subject = teacherSnapshot.getString("position");
 

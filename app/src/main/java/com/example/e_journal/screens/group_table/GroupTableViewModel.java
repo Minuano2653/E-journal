@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.e_journal.model.group_table.FirebaseGroupTableRepository;
 import com.example.e_journal.model.group_table.GradeOrVisit;
 import com.example.e_journal.model.group_table.Student;
+import com.example.e_journal.model.group_table.StudentStatistics;
 import com.example.e_journal.utlis.LoadingState;
 import com.github.javafaker.Bool;
 
@@ -36,6 +37,11 @@ public class GroupTableViewModel extends ViewModel {
     public LiveData<String> saveResult = _saveResult;
     private MutableLiveData<GradeOrVisit> _updatedGradeOrVisit = new MutableLiveData<>();
     public LiveData<GradeOrVisit> updatedGradeOrVisit = _updatedGradeOrVisit;
+
+    private MutableLiveData<StudentStatistics> _studentStatistics = new MutableLiveData<>();
+    public LiveData<StudentStatistics> studentStatistics = _studentStatistics;
+    private MutableLiveData<String> _fetchingStudentsStatisticsResult = new MutableLiveData<>();
+    public LiveData<String> fetchingStudentsStatisticsResult = _fetchingStudentsStatisticsResult;
 
     private MutableLiveData<LoadingState> _state = new MutableLiveData<>();
     public LiveData<LoadingState> state = _state;
@@ -81,6 +87,21 @@ public class GroupTableViewModel extends ViewModel {
             @Override
             public void onError(Exception e) {
                 _state.setValue(LoadingState.ERROR);
+                Log.d("TAG", e.toString());
+            }
+        });
+    }
+
+    public void loadStudentStatistics(String studentName, String groupName) {
+        groupTableRepository.getStudentStatistics(studentName, groupName, _month.getValue(), new FirebaseGroupTableRepository.StudentStatisticsLoadListener() {
+            @Override
+            public void onSuccess(StudentStatistics studentStatistics) {
+                _studentStatistics.postValue(studentStatistics);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                _fetchingStudentsStatisticsResult.postValue("Ошибка получения данных студента");
                 Log.d("TAG", e.toString());
             }
         });

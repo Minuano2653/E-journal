@@ -39,6 +39,13 @@
         <item>У</item>
     </string-array>
 
+    <string-array name="terms_array">
+        <item>Четверть 1</item>
+        <item>Четверть 2</item>
+        <item>Четверть 3</item>
+        <item>Четверть 4</item>
+    </string-array>
+
     <string name="title_activity_teacher">TeacherActivity</string>
     <string name="Logout">Выйти из аккаунта</string>
     <string name="classes_not_found_text_view">Классы не найдены</string>
@@ -52,6 +59,11 @@
     <string name="set_homework_popup_item_text">Задать домашнее задание</string>
     <string name="go_to_group_table_popup_item_text">Перейти к журналу</string>
     <string name="group_table_not_found_text">Журнал не найден</string>
+    <string name="student_fio">ФИО ученика: %1$s</string>
+    <string name="presence_count">Посещений: %1$s</string>
+    <string name="absence_count">Отсутствий: %1$s</string>
+    <string name="excusedAbsence">Отсутствий по ув. причине: %1$s</string>
+    <string name="average_grade">Средний балл: %1$s</string>
 
 
 </resources>
