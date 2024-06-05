@@ -120,7 +120,9 @@ public class FirebaseGroupTableRepository {
                                                     months.put(3, aprilMap);
                                                     months.put(4, mayMap);
                                                 } else {
-                                                    throw new IllegalArgumentException("No matching month");
+                                                    Map<String, String> juneMap = (Map<String, String>) documentSnapshot.get("june");
+                                                    months.put(5, juneMap);
+
                                                 }
                                                 Map<String, String> studentStatistics = calculateStatistics(months);
 

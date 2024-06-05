@@ -57,10 +57,10 @@ public class HomeworkDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         binding = DialogFragmentHomeworkBinding.inflate(getLayoutInflater());
+        binding.titleTextView.setText(getString(R.string.homework_title, groupName, date));
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(requireContext())
                 .setView(binding.getRoot())
-                .setTitle("Класс: " + groupName + "\nДомашнее задание на " + date)
                 .setPositiveButton("Сохранить", (dialog, which) -> {
                     viewModel.saveHomework(new Homework(groupName, date, binding.editTextHomework.getText().toString()), requireContext());
                     dismiss();

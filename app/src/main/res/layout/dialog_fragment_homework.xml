@@ -7,15 +7,27 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="16dp"
+        tools:text="Класс: 11-Б\nДомашнее задание на 01.06.2024" />
+
     <EditText
         android:id="@+id/editTextHomework"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/homework_edit_text_hint"
+        android:fontFamily="@font/montserrat_medium"
         android:inputType="textMultiLine|textCapSentences"
+        android:layout_marginTop="16dp"
         android:maxLines="5"
         android:minLines="1"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView"
         tools:layout_editor_absoluteX="16dp" />
 
     <ProgressBar

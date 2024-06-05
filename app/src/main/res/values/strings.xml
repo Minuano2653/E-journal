@@ -9,8 +9,9 @@
     <string name="email_edit_text_hint">Электронная почта</string>
     <string name="password_hint_edit_text">Пароль</string>
     <string name="students_number_text">%1$s человек</string>
-    <string name="search_view_hint">Поиск групп</string>
+    <string name="search_view_hint">Найдите группу…</string>
 
+    <string name="homework_title">Класс: %1$s\nДомашнее задание на %2$s</string>
     <string name="group_name_text_view">Класс: %1$s</string>
     <string name="lesson_number_text_view">Урок: %1$s</string>
     <string name="lesson_time_text_view">Время: %1$s</string>
@@ -59,6 +60,7 @@
     <string name="set_homework_popup_item_text">Задать домашнее задание</string>
     <string name="go_to_group_table_popup_item_text">Перейти к журналу</string>
     <string name="group_table_not_found_text">Журнал не найден</string>
+    <string name="student_statistics_title">Успеваемость на %1$s</string>
     <string name="student_fio">ФИО ученика: %1$s</string>
     <string name="presence_count">Посещений: %1$s</string>
     <string name="absence_count">Отсутствий: %1$s</string>

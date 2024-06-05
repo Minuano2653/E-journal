@@ -34,27 +34,23 @@ public class DialogFragmentStudentStatistics extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
+        String currentDate = dateFormat.format(calendar.getTime());
+
         binding = DialogFragmentStudentStatisticsBinding.inflate(getLayoutInflater());
 
-        Log.d("RRRR", studentStatistics.getStudentName());
-        Log.d("RRRR", studentStatistics.getPresenceCount());
-        Log.d("RRRR", studentStatistics.getAbsenceCount());
-        Log.d("RRRR", studentStatistics.getExcusedAbsenceCount());
-        Log.d("RRRR", studentStatistics.getAverageGrade());
-
+        binding.titleTextView.setText(getString(R.string.student_statistics_title, currentDate));
         binding.studentNameTextView.setText(getString(R.string.student_fio, studentStatistics.getStudentName()));
         binding.presenceCountTextView.setText(getString(R.string.presence_count, studentStatistics.getPresenceCount()));
         binding.absenceCountTextView.setText(getString(R.string.absence_count, studentStatistics.getAbsenceCount()));
         binding.excusedAbsenceCountTextView.setText(getString(R.string.excusedAbsence, studentStatistics.getExcusedAbsenceCount()));
         binding.averageGradeTextView.setText(getString(R.string.average_grade, studentStatistics.getAverageGrade()));
 
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
-        String currentDate = dateFormat.format(calendar.getTime());
+
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(requireContext())
                 .setView(binding.getRoot())
-                .setTitle("Успеваемость на " + currentDate)
                 .setPositiveButton("Закрыть", null);
 
         setCancelable(false);

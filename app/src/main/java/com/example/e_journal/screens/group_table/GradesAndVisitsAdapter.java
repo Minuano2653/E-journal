@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.e_journal.R;
 import com.example.e_journal.databinding.ItemGradeOrVisitBinding;
 import com.example.e_journal.model.group_table.GradeOrVisit;
 import com.example.e_journal.model.group_table.Student;
@@ -78,7 +80,32 @@ public class GradesAndVisitsAdapter extends  RecyclerView.Adapter<GradesAndVisit
     @Override
     public void onBindViewHolder(@NonNull GradesAndVisitsAdapter.GradeViewHolder holder, int position) {
         GradeOrVisit gradeOrVisit = gradesAndVisits.get(position);
-        holder.binding.gradeTextView.setText(gradeOrVisit.getValue());
+
+        String gradeValue = gradeOrVisit.getValue();
+
+        holder.binding.gradeTextView.setText(gradeValue);
+
+        int colorResId;
+
+        switch (gradeValue) {
+            case "2":
+                colorResId = R.color.grade_2;
+                break;
+            case "3":
+                colorResId = R.color.grade_3;
+                break;
+            case "4":
+                colorResId = R.color.grade_4;
+                break;
+            case "5":
+                colorResId = R.color.grade_5;
+                break;
+            default:
+                colorResId = R.color.black;
+                break;
+        }
+
+        holder.binding.gradeTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), colorResId));
         holder.binding.gradeTextView.setTag(gradeOrVisit);
         holder.binding.gradeTextView.setOnClickListener(v -> itemActionListener.showGradeChoice(gradeOrVisit));
     }

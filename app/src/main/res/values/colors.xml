@@ -6,4 +6,9 @@
     <color name="even_color">#2196F3</color>
     <color name="primary">#6750A3</color>
     <color name="primary_pastel">#B3A8C7</color> <!-- Пастельный оттенок #6750A3 -->
+
+    <color name="grade_2">#FF0000</color>
+    <color name="grade_3">#FFA500</color>
+    <color name="grade_4">#32CD32</color>
+    <color name="grade_5">#009000</color>
 </resources>

@@ -17,6 +17,7 @@
             android:id="@+id/lessonGroupNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_medium"
             android:text="@string/group_name_text_view"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
@@ -24,6 +25,7 @@
             android:id="@+id/lessonNumberTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_medium"
             android:text="@string/lesson_number_text_view"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
@@ -32,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/lesson_time_text_view"
+            android:fontFamily="@font/montserrat_medium"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

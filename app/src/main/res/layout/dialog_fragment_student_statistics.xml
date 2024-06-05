@@ -6,13 +6,22 @@
     android:padding="24dp">
 
     <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:text="@string/student_fio"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
         android:id="@+id/studentNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:fontFamily="@font/montserrat_medium"
         android:text="@string/student_fio"
         android:textSize="18sp"
-
         android:layout_marginBottom="8dp"/>
 
     <TextView
@@ -20,6 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
+        android:fontFamily="@font/montserrat_medium"
         android:text="@string/presence_count"
         android:layout_marginBottom="4dp"/>
 
@@ -28,6 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
+        android:fontFamily="@font/montserrat_medium"
         android:text="@string/absence_count"
         android:layout_marginBottom="4dp"/>
 
@@ -36,6 +47,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
+        android:fontFamily="@font/montserrat_medium"
+
         android:text="@string/excusedAbsence"
         android:layout_marginBottom="4dp"/>
 
@@ -44,6 +57,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
+        android:fontFamily="@font/montserrat_medium"
+
         android:text="@string/average_grade"
         android:layout_marginBottom="4dp"/>
 </LinearLayout>

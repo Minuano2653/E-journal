@@ -7,6 +7,7 @@
     android:background="@drawable/border_black"
     android:textAlignment="center"
     android:gravity="center"
+    android:fontFamily="@font/montserrat_medium"
     android:textColor="@color/black"
     android:textSize="20sp"
     android:textStyle="bold"

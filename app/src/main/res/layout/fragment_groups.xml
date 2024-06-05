@@ -19,6 +19,7 @@
             android:background="@drawable/search_view_background"
             app:iconifiedByDefault="false"
             app:queryHint="@string/search_view_hint"
+            android:theme="@style/CustomSearchViewTheme"
             android:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
