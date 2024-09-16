@@ -1,14 +1,6 @@
 package com.example.e_journal.model.group_table;
 
-import static android.content.Context.MODE_PRIVATE;
 
-import android.content.SharedPreferences;
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.example.e_journal.model.groups.FirebaseGroupsRepository;
-import com.example.e_journal.model.homework.Homework;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,24 +9,19 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public class FirebaseGroupTableRepository {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private final String teacherUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     public interface GroupTableLoadListener {
         void onSuccess(List<Student> students);
@@ -47,6 +34,8 @@ public class FirebaseGroupTableRepository {
     }
 
     public void saveGradeOrVisit(String groupName, GradeOrVisit gradeOrVisit, String month, OnSuccessListener<Void> onSuccessListener, OnFailureListener onFailureListener) {
+
+        String teacherUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         db.collection("maths teachers")
                 .document(teacherUID)
@@ -77,6 +66,8 @@ public class FirebaseGroupTableRepository {
     }
 
     public void getStudentStatistics(String studentName, String groupName, int month, StudentStatisticsLoadListener listener) {
+
+        String teacherUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         db.collection("maths teachers")
                 .document(teacherUID)
@@ -124,19 +115,14 @@ public class FirebaseGroupTableRepository {
                                                     months.put(5, juneMap);
 
                                                 }
-                                                Map<String, String> studentStatistics = calculateStatistics(months);
+                                                StudentStatistics studentStatistics = new StudentStatistics(studentName);
+                                                studentStatistics.calculateStatistics(months);
 
                                                 studentRef.collection("subjects")
                                                         .document(subject)
                                                         .set(studentStatistics, SetOptions.merge())
                                                         .addOnSuccessListener(unused -> {
-                                                            listener.onSuccess(new StudentStatistics(
-                                                                    studentName,
-                                                                    studentStatistics.get("presenceCount"),
-                                                                    studentStatistics.get("absenceCount"),
-                                                                    studentStatistics.get("excusedAbsenceCount"),
-                                                                    studentStatistics.get("averageGrade")
-                                                                    ));
+                                                            listener.onSuccess(studentStatistics);
                                                         })
                                                         .addOnFailureListener(listener::onError);
                                             }).addOnFailureListener(listener::onError);
@@ -148,7 +134,10 @@ public class FirebaseGroupTableRepository {
     }
 
     private Map<String, String> calculateStatistics(Map<Integer, Map<String, String>> months) {
+
         Calendar currentDate = Calendar.getInstance();
+        currentDate.add(Calendar.DAY_OF_MONTH, 1);
+
         int presences = 0;
         int absences = 0;
         int excusedAbsences = 0;
@@ -161,6 +150,7 @@ public class FirebaseGroupTableRepository {
             Map<String, String> monthMap = monthEntry.getValue();
 
             for (Map.Entry<String, String> entry : monthMap.entrySet()) {
+
                 Calendar dateKey = Calendar.getInstance();
                 dateKey.set(Calendar.MONTH, monthNumber);
                 dateKey.set(Calendar.DAY_OF_MONTH, Integer.parseInt(entry.getKey()));
@@ -169,6 +159,7 @@ public class FirebaseGroupTableRepository {
                 if (dateKey.after(currentDate)) {
                     continue;
                 }
+
 
                 switch (value) {
                     case "2":
@@ -202,6 +193,8 @@ public class FirebaseGroupTableRepository {
     }
 
     public void loadStudents(String groupName, String month, GroupTableLoadListener listener) {
+
+        String teacherUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         db.collection("maths teachers")
                 .document(teacherUID)
@@ -253,7 +246,5 @@ public class FirebaseGroupTableRepository {
                             }).addOnFailureListener(e -> listener.onError(e));
 
                 }).addOnFailureListener(e -> listener.onError(e));
-
-
     }
 }

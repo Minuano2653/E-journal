@@ -5,6 +5,10 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+
 public class StudentStatistics implements Parcelable {
     private String studentName;
     private String presenceCount;
@@ -18,6 +22,10 @@ public class StudentStatistics implements Parcelable {
         this.absenceCount = absenceCount;
         this.excusedAbsenceCount = excusedAbsenceCount;
         this.averageGrade = averageGrade;
+    }
+
+    public StudentStatistics(String studentName) {
+        this.studentName = studentName;
     }
 
     protected StudentStatistics(Parcel in) {
@@ -72,5 +80,61 @@ public class StudentStatistics implements Parcelable {
         dest.writeString(absenceCount);
         dest.writeString(excusedAbsenceCount);
         dest.writeString(averageGrade);
+    }
+
+    public void calculateStatistics(Map<Integer, Map<String, String>> months) {
+
+        Calendar currentDate = Calendar.getInstance();
+        currentDate.add(Calendar.DAY_OF_MONTH, 1);
+
+        int presences = 0;
+        int absences = 0;
+        int excusedAbsences = 0;
+        double totalScore = 0;
+        int scoreCount = 0;
+
+        for (Map.Entry<Integer, Map<String, String>> monthEntry : months.entrySet()) {
+            int monthNumber = monthEntry.getKey();
+            Map<String, String> monthMap = monthEntry.getValue();
+
+            for (Map.Entry<String, String> entry : monthMap.entrySet()) {
+
+                Calendar dateKey = Calendar.getInstance();
+                dateKey.set(Calendar.MONTH, monthNumber);
+                dateKey.set(Calendar.DAY_OF_MONTH, Integer.parseInt(entry.getKey()));
+                String value = entry.getValue();
+
+                if (dateKey.after(currentDate)) {
+                    continue;
+                }
+
+
+                switch (value) {
+                    case "2":
+                    case "3":
+                    case "4":
+                    case "5":
+                        presences++;
+                        totalScore += Integer.parseInt(value);
+                        scoreCount++;
+                        break;
+                    case "":
+                        presences++;
+                        break;
+                    case "Н":
+                        absences++;
+                        break;
+                    case "У":
+                        excusedAbsences++;
+                        break;
+                }
+            }
+        }
+
+        presenceCount = String.valueOf(presences);
+        absenceCount = String.valueOf(absences);
+        excusedAbsenceCount = String.valueOf(excusedAbsences);
+        this.averageGrade = (scoreCount > 0) ? String.format("%.2f", totalScore / scoreCount) : "0.00";
+
     }
 }
